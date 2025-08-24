@@ -1,0 +1,40 @@
+html, body {
+    margin: 0;
+    text-align: center;
+    background-color: #233;
+    color: #edc;
+    height: 100%;
+    font-size: 18px;
+    font-family: sans-serif;
+    align-content: center;
+}
+
+textarea {
+    font-family: sans-serif;
+    background-color: #edc;
+    width: 65%;
+    padding: 18px;
+}
+
+.interface {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.two {
+    align-content: center;
+    flex: 2;
+}
+
+.one {
+    align-content: center;
+    flex: 1;
+}
+
+.bigimg {
+    position: absolute;
+    left: 1;
+    top: 1;
+    z-index: -1;
+}
