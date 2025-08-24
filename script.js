@@ -1,26 +1,89 @@
-const mappings = {
-    // Simple vowel mappings
-    'a': 'า',
-    'e': 'เ',
-    'i': 'ิ',
-    'o': 'โ',
-    'u': 'ุ',
-    'ă': 'แ',  // example
-    'â': 'เ',  // example
-    // Add more mappings as needed
+const vowel_mappings = {
+    'e': ['แ', '', ''],
+    'ê': ['เ', '', ''],
+    'ơ': ['เ', '', 'อ'],
+    'ô': ['โ', '', ''],
+    'o': ['', '', 'อ'],
+    'a': ['', '', 'า'],
+    'ă': ['', '', ''],
+    'â': ['เ', 'ี', ''],
+    'i': ['', 'ี', ''],
+    'ư': ['', 'ื', ''],
+    'u': ['', 'ุ', ''],
+    
+    'ươ': ['เ', 'ื', 'อ'],
+    'ưa': ['เ', 'ื', 'อ'],
+    'iê': ['เ', 'ี', 'ย'],
+    'ia': ['เ', 'ี', 'ย'],
+    'uô': ['', '', 'ว'], # ['', 'ั', 'ว'],
+    'ua': ['', 'ั', 'ว'],
+
+    'ay': ['', '', 'ย'], # ['', 'ั', 'ย'],
+    'au': ['เ', '', 'า'],
+    'ây': ['เ', 'ี', 'ย'], # ['', 'ึ', 'ย'],
+
+    'oă': ['', 'ว', ''], # ['', 'วั', ''],
+    'oa': ['', 'ว', 'า'],
+    'oe': ['แ', 'ว', ''],
+    'uâ': ['เ', 'วี', ''], # ['', 'วึ', ''], # 'วิ'
+    'uơ': ['เ', 'ว', 'อ'],
+    'uê': ['เ', 'ว', ''],
+    'uy': ['', 'วี', ''], # 'วิ'
+    'ơi': ['เ', '', 'ย'],
+    'uyê': ['เ', 'วี', 'ย'],
+    'uya': ['เ', 'วี', 'ย'],
+    'oay': ['', 'ว', 'ย'], # ['', 'วั', 'ย'],
+    'uây': ['เ', 'วี', 'ย'], # ['', 'วึ', 'ย'],
 };
 
-// Function to apply mappings
+const consonant_mappings = {
+    'm': ['ม', 'หม'],
+    'n': ['น', 'หน'],
+    'nh': ['ญ', 'หญ'],
+    'ng': ['ง', 'หง'],
+    'ngh': ['ง', 'หง'],
+
+    'b': ['พ', 'บ'], # !
+    'đ': ['ฑ', 'ฎ'],
+    'p': ['ภ', 'ป'], # !
+    't': ['ท', 'ด'],
+    'th': ['ธ', 'ถ'],
+    'tr': ['ฒ', 'ฐ'],
+    'ch': ['ช', 'จ'],
+    'c': ['ค', 'ก'],
+    'k': ['ค', 'ก'],
+    'q': ['ค', 'ก'],
+    'qu': ['คว', 'กว'],
+
+    'f': ['ฟ', 'ผ'], # !
+    'ph': ['ฟ', 'ผ'], # !
+    'x': ['ฌ', 'ฉ'],
+    's': ['ซ', 'ส'],
+    'kh': ['ฆ', 'ข'],
+    'h': ['ฮ', 'ห'],
+
+    'v': ['ว', 'หว'],
+    'w': ['ว', 'หว'],
+    'gi': ['ย', 'หย'],
+    'j': ['ย', 'หย'],
+    'z': ['ย', 'หย'],
+    'd': ['ย', 'หย'],
+    'g': ['ฅ', 'ฃ'],
+    'gh': ['ฅ', 'ฃ'],
+    'l': ['ล', 'หล'],
+    'r': ['ร', 'หร'],
+}
+
 function transcribe() {
     let inputText = document.getElementById("input").value;
     let outputText = inputText;
 
     // Sort keys by length to handle digraphs first
-    const keys = Object.keys(mappings).sort((a, b) => b.length - a.length);
+    const keys = Object.keys(vowel_mappings).sort((a, b) => b.length - a.length);
 
     keys.forEach(key => {
         let regex = new RegExp(key, 'g');
-        outputText = outputText.replace(regex, mappings[key]);
+        outputText = outputText.replace(regex, vowel_mappings[key]);
     });
 
     document.getElementById("output").value = outputText;
