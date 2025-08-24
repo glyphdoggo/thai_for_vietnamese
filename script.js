@@ -75,15 +75,26 @@ const consonant_mappings = {
 }
 
 function transcribe() {
-    let inputText = document.getElementById("input").value;
+    let inputText = document.getElementById("input").value.toLowerCase();
     let outputText = inputText;
 
-    // Sort keys by length to handle digraphs first
-    const keys = Object.keys(vowel_mappings).sort((a, b) => b.length - a.length);
+    // Get selected slot index (default = 0 if not using radio buttons)
+    const slotIndex = 0;
 
-    keys.forEach(key => {
-        let regex = new RegExp(key, 'g');
-        outputText = outputText.replace(regex, vowel_mappings[key]);
+    // Combine all keys with type info
+    const allMappings = [];
+    for (let key in vowel_mappings) allMappings.push({ key, type: 'vowel' });
+    for (let key in consonant_mappings) allMappings.push({ key, type: 'consonant' });
+
+    // Sort by length descending (to prioritize digraphs/trigraphs)
+    allMappings.sort((a, b) => b.key.length - a.key.length);
+
+    allMappings.forEach(item => {
+        let regex = new RegExp(item.key, 'g');
+        let value = (item.type === 'vowel')
+            ? vowel_mappings[item.key][slotIndex]
+            : consonant_mappings[item.key][slotIndex];
+        outputText = outputText.replace(regex, value);
     });
 
     document.getElementById("output").value = outputText;
