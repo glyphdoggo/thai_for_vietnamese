@@ -3,49 +3,7 @@
     <title>Vietnamese Thai Transcriber</title>
     <img class="bigimg" src="https://raw.githubusercontent.com/glyphdoggo/thai-for-vietnamese/refs/heads/main/icon.png" height="400">
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="style.css"> -->
-    <style>
-    html, body {
-        margin: 0;
-        text-align: center;
-        background-color: #333;
-        color: #edc;
-        height: 100%;
-        font-size: 18px;
-        font-family: sans-serif;
-        align-content: center;
-    }
-
-    textarea {
-        font-family: sans-serif;
-        background-color: #edc;
-        width: 65%;
-        padding: 18px;
-    }
-
-    .interface {
-        display: flex;
-        height: 100%;
-        flex-direction: column;
-    }
-
-    .two {
-        align-content: center;
-        flex: 2;
-    }
-
-    .one {
-        align-content: center;
-        flex: 1;
-    }
-
-    .bigimg {
-        position: absolute;
-        left: 1;
-        top: 1;
-        z-index: -1;
-    }
-    </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="https://raw.githubusercontent.com/glyphdoggo/thai-for-vietnamese/refs/heads/main/icon.png">
   </head>
   <body>
