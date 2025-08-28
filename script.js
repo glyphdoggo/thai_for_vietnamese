@@ -1,101 +1,238 @@
-const vowel_mappings = {
-    'e': ['แ', '', ''],
-    'ê': ['เ', '', ''],
-    'ơ': ['เ', '', 'อ'],
-    'ô': ['โ', '', ''],
-    'o': ['', '', 'อ'],
-    'a': ['', '', 'า'],
-    'ă': ['', '', ''],
-    'â': ['เ', 'ี', ''],
-    'i': ['', 'ี', ''],
-    'ư': ['', 'ื', ''],
-    'u': ['', 'ุ', ''],
-    
-    'ươ': ['เ', 'ื', 'อ'],
-    'ưa': ['เ', 'ื', 'อ'],
-    'iê': ['เ', 'ี', 'ย'],
-    'ia': ['เ', 'ี', 'ย'],
-    'uô': ['', '', 'ว'], # ['', 'ั', 'ว'],
-    'ua': ['', 'ั', 'ว'],
+<html lang="en">
+  <head>
+    <title>Vietnamese Thai Transcriber</title>
+    <img class="bigimg" src="https://raw.githubusercontent.com/glyphdoggo/thai-for-vietnamese/refs/heads/main/icon.png" height="400">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+    html, body {
+        margin: 0;
+        text-align: center;
+        background-color: #333;
+        color: #edc;
+        height: 100%;
+        font-size: 18px;
+        font-family: sans-serif;
+        align-content: center;
+    }
 
-    'ay': ['', '', 'ย'], # ['', 'ั', 'ย'],
-    'au': ['เ', '', 'า'],
-    'ây': ['เ', 'ี', 'ย'], # ['', 'ึ', 'ย'],
+    textarea {
+        font-family: sans-serif;
+        background-color: #edc;
+        width: 65%;
+        padding: 18px;
+    }
 
-    'oă': ['', 'ว', ''], # ['', 'วั', ''],
-    'oa': ['', 'ว', 'า'],
-    'oe': ['แ', 'ว', ''],
-    'uâ': ['เ', 'วี', ''], # ['', 'วึ', ''], # 'วิ'
-    'uơ': ['เ', 'ว', 'อ'],
-    'uê': ['เ', 'ว', ''],
-    'uy': ['', 'วี', ''], # 'วิ'
-    'ơi': ['เ', '', 'ย'],
-    'uyê': ['เ', 'วี', 'ย'],
-    'uya': ['เ', 'วี', 'ย'],
-    'oay': ['', 'ว', 'ย'], # ['', 'วั', 'ย'],
-    'uây': ['เ', 'วี', 'ย'], # ['', 'วึ', 'ย'],
-};
+    .interface {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+    }
 
-const consonant_mappings = {
-    'm': ['ม', 'หม'],
-    'n': ['น', 'หน'],
-    'nh': ['ญ', 'หญ'],
-    'ng': ['ง', 'หง'],
-    'ngh': ['ง', 'หง'],
+    .two {
+        align-content: center;
+        flex: 2;
+    }
 
-    'b': ['พ', 'บ'], # !
-    'đ': ['ฑ', 'ฎ'],
-    'p': ['ภ', 'ป'], # !
-    't': ['ท', 'ด'],
-    'th': ['ธ', 'ถ'],
-    'tr': ['ฒ', 'ฐ'],
-    'ch': ['ช', 'จ'],
-    'c': ['ค', 'ก'],
-    'k': ['ค', 'ก'],
-    'q': ['ค', 'ก'],
-    'qu': ['คว', 'กว'],
+    .one {
+        align-content: center;
+        flex: 1;
+    }
 
-    'f': ['ฟ', 'ผ'], # !
-    'ph': ['ฟ', 'ผ'], # !
-    'x': ['ฌ', 'ฉ'],
-    's': ['ซ', 'ส'],
-    'kh': ['ฆ', 'ข'],
-    'h': ['ฮ', 'ห'],
+    .bigimg {
+        position: absolute;
+        left: 1;
+        top: 1;
+        z-index: -1;
+    }
+    </style>
+    <link rel="icon" href="https://raw.githubusercontent.com/glyphdoggo/thai-for-vietnamese/refs/heads/main/icon.png">
+  </head>
+  <body>
+    <div class="interface">
+      <div class="two"></div>
+      <div class="two">
+        <h3>VIETNAMESE THAI TRANSCRIBER</h3>
+        <h4>A Thai Orthography for the Vietnamese Language</h4>
+      </div>
+      <div class="one"></div>
+      <div>
+        <p>Type or paste Vietnamese text below:</p>
+        <textarea rows="5" id="input" placeholder="Tất cả mọi người sinh ra đều được tự do và bình đẳng về nhân phẩm và quyền lợi..." oninput="transcribe()"></textarea>
+      </div>
+      <div class="one"></div>
+      <div>
+        <p>Result:</p>
+        <textarea rows="5" id="output"></textarea>
+      </div>
+      <div class="one"></div>
+      <div class="two"></div>
+      <script> // src="script.js"
+        const vowel_mappings = {
+          'a': ['', '', 'า'],
+          'ă': ['', '', ''],
+          'â': ['เ', 'ี', ''],
+          'e': ['แ', '', ''],
+          'ê': ['เ', '', ''],
+          'i': ['', 'ี', ''],
+          'o': ['', '', 'อ'],
+          'ô': ['โ', '', ''],
+          'ơ': ['เ', '', 'อ'],
+          'u': ['', 'ุ', ''],
+          'ư': ['', 'ื', ''],
+          'y': ['', 'ี', ''],
 
-    'v': ['ว', 'หว'],
-    'w': ['ว', 'หว'],
-    'gi': ['ย', 'หย'],
-    'j': ['ย', 'หย'],
-    'z': ['ย', 'หย'],
-    'd': ['ย', 'หย'],
-    'g': ['ฅ', 'ฃ'],
-    'gh': ['ฅ', 'ฃ'],
-    'l': ['ล', 'หล'],
-    'r': ['ร', 'หร'],
-}
+          'ia': ['เ', 'ี', 'ย'],
+          'iê': ['เ', 'ี', 'ย'],
+          'ua': ['', 'ั', 'ว'],
+          'uô': ['', 'ั', 'ว'],
+          'ưa': ['เ', 'ื', 'อ'],
+          'ươ': ['เ', 'ื', 'อ'],
 
-function transcribe() {
-    let inputText = document.getElementById("input").value.toLowerCase();
-    let outputText = inputText;
+          'au': ['เ', '', 'า'],
+          'ay': ['', '', 'ย'],
+          'ây': ['เ', 'ี', 'ย'],
 
-    // Get selected slot index (default = 0 if not using radio buttons)
-    const slotIndex = 0;
+          'oa': ['', 'ว', 'า'],
+          'oă': ['', 'ว', ''],
+          'oe': ['แ', 'ว', ''],
+          'ơi': ['เ', '', 'ย'],
+          'uâ': ['เ', 'วี', ''],
+          'ue': ['แ', 'ว', ''],
+          'uê': ['เ', 'ว', ''],
+          'uơ': ['เ', 'ว', 'อ'],
+          'uy': ['', 'วี', ''],
 
-    // Combine all keys with type info
-    const allMappings = [];
-    for (let key in vowel_mappings) allMappings.push({ key, type: 'vowel' });
-    for (let key in consonant_mappings) allMappings.push({ key, type: 'consonant' });
+          'oay': ['', 'ว', 'ย'],
+          'uây': ['เ', 'วี', 'ย'],
+          'uya': ['เ', 'วี', 'ย'],
+          'uyê': ['เ', 'วี', 'ย'],
+        };
 
-    // Sort by length descending (to prioritize digraphs/trigraphs)
-    allMappings.sort((a, b) => b.key.length - a.key.length);
+        const consonant_mappings = {
+          'b': ['พ', 'บ'],
+          'c': ['ค', 'ก'],
+          'ch': ['ช', 'จ'],
+          'd': ['ย', 'หย'],
+          'đ': ['ฑ', 'ฎ'],
+          'g': ['ฅ', 'ฃ'],
+          'gh': ['ฅ', 'ฃ'],
+          'gi': ['ย', 'หย'],
+          'h': ['ฮ', 'ห'],
+          'k': ['ค', 'ก'],
+          'kh': ['ฆ', 'ข'],
+          'l': ['ล', 'หล'],
+          'm': ['ม', 'หม'],
+          'n': ['น', 'หน'],
+          'ng': ['ง', 'หง'],
+          'ngh': ['ง', 'หง'],
+          'nh': ['ญ', 'หญ'],
+          'p': ['ภ', 'ป'],
+          'ph': ['ฟ', 'ผ'],
+          'q': ['ค', 'ก'],
+          'r': ['ร', 'หร'],
+          's': ['ซ', 'ส'],
+          't': ['ท', 'ด'],
+          'th': ['ธ', 'ถ'],
+          'tr': ['ฒ', 'ฐ'],
+          'v': ['ว', 'หว'],
+          'x': ['ฌ', 'ฉ'],
 
-    allMappings.forEach(item => {
-        let regex = new RegExp(item.key, 'g');
-        let value = (item.type === 'vowel')
-            ? vowel_mappings[item.key][slotIndex]
-            : consonant_mappings[item.key][slotIndex];
-        outputText = outputText.replace(regex, value);
-    });
+          'f': ['ฟ', 'ผ'],
+          'j': ['ย', 'หย'],
+          'w': ['ว', 'หว'],
+          'z': ['ย', 'หย'],
 
-    document.getElementById("output").value = outputText;
-}
+          // 'i': ['ย', 'หย'],
+          // 'o': ['ว', 'หว'],
+          // 'u': ['ว', 'หว'],
+          // 'y': ['ย', 'หย'],
+        };
+
+        function transcribe() {
+            let inputText = document.getElementById("input").value.toLowerCase().trim();
+            let words = inputText.split(/\s+/);  // split by spaces
+            let result = [];
+
+            words.forEach(word => {
+                let syllable = processSyllable(word);
+                result.push(syllable);
+            });
+
+            document.getElementById("output").value = result.join(" ");
+        }
+
+        function processSyllable(syll) {
+            let preV = '', mainC = '', postV1 = '', tone = '', postV2 = '', finalC = '';
+
+            let consonantKeys = Object.keys(consonant_mappings).sort((a,b)=>b.length-a.length);
+            let vowelKeys = Object.keys(vowel_mappings).sort((a,b)=>b.length-a.length);
+
+            let initial = '';
+            for (let key of consonantKeys) {
+                if (syll.startsWith(key)) {
+                    initial = key;
+                    break;
+                }
+            }
+
+            let remaining = syll.slice(initial.length);
+
+            // Find vowel cluster
+            let vowel = '';
+            for (let key of vowelKeys) {
+                if (remaining.startsWith(key)) {
+                    vowel = key;
+                    break;
+                }
+            }
+
+            if (vowel) {
+                preV = vowel_mappings[vowel][0];
+                postV1 = vowel_mappings[vowel][1];
+                postV2 = vowel_mappings[vowel][2];
+                remaining = remaining.slice(vowel.length);
+            }
+
+            if (initial) {
+                mainC = consonant_mappings[initial][1];
+            } else if (vowel) {
+                mainC = 'อ';
+            } else {
+                mainC = ''; // For spaces, punctuation, or unknown characters
+            }
+
+            let glide = '';
+            if (remaining.length > 0) {
+                if (remaining.endsWith('i') || remaining.endsWith('y')) {
+                    glide = 'ย';
+                } else if (remaining.endsWith('o') || remaining.endsWith('u')) {
+                    glide = 'ว';
+                }
+            }
+
+            // Handle final consonant
+            let final = '';
+            for (let key of consonantKeys) {
+                if (remaining.endsWith(key)) {
+                    final = key;
+                    break;
+                }
+            }
+
+            if (final) {
+                if (['d','gi','j','l','m','n','ng','nh','r','v','w','z'].includes(final)) {
+                    finalC = consonant_mappings[final][0]; // special coda forms (voiced/sonorants)
+                } else if (final === 'p') {
+                    finalC = consonant_mappings['b'][1]; // p → b in coda
+                } else if (consonant_mappings[final]) {
+                    finalC = consonant_mappings[final][1]; // default
+                }
+            }
+
+            return preV + mainC + postV1 + postV2 + glide + finalC;
+        }
+      </script>
+    </div>
+  </body>
+</html>
