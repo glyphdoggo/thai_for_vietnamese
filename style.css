@@ -1,16 +1,16 @@
 html, body {
     margin: 0;
     text-align: center;
-    background-color: #233;
+    background-color: #1C2A26;
     color: #fed;
     height: 100%;
     font-size: 18px;
-    font-family: sans-serif;
+    font-family: "Krub";
     align-content: center;
 }
 
 textarea {
-    font-family: sans-serif;
+    font-family: "Krub";
     background-color: #fed;
     width: 65%;
     padding: 18px;
@@ -30,4 +30,10 @@ textarea {
 .two {
     align-content: center;
     flex: 2;
+}
+
+.krub-regular {
+  font-family: "Krub", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
