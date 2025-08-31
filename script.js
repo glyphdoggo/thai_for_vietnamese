@@ -222,7 +222,7 @@ function viet_to_thai(input_text) {
     while (i < input_text.length) {
         let char = input_text[i];
 
-        if (' ,.:;?\"01234567890!@#$%&*()_+=[]{}'.includes(char)) {
+        if (' ,.:;?\"01234567890!@#$%&*()_+=[]{}/<>\\¿€®©§\t\n\r'.includes(char)) {
             result += char;
             i++;
             continue;
