@@ -14,10 +14,12 @@ textarea {
     background-color: #fed;
     width: 65%;
     padding: 18px;
+    font-size: 18px;
 }
 
 .output {
     font-family: "Noto Sans Thai Looped";
+    font-size: 19px;
 }
 
 .interface {
