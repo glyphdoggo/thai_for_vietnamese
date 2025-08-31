@@ -23,16 +23,17 @@ const diph_ay  = ['ay','aỳ','aý','aỵ','aỷ','aỹ','ày','áy','ạy','ả
 const diph_au  = ['au','aù','aú','aụ','aủ','aũ','àu','áu','ạu','ảu','ãu'];
 const diph_ây  = ['ây','âỳ','âý','âỵ','âỷ','âỹ','ầy','ấy','ậy','ẩy','ẫy'];
 
-const diph_oă  = ['oă','oằ','oắ','oặ','oẳ','oẵ','òă','óă','ọă','ỏă','õă'];  // (q)uă
-const diph_oa  = ['oa','oà','oá','oạ','oả','oã','òa','óa','ọa','ỏa','õa'];  // (q)ua
-const diph_oe  = ['oe','oè','oé','oẹ','oẻ','oẽ','òe','óe','ọe','ỏe','õe'];  // (q)ue
-const diph_uâ  = ['uâ','uầ','uấ','uậ','uẩ','uẫ','ùâ','úâ','ụâ','ủâ','ũâ'];  // (q)uâ
-const diph_uơ  = ['uơ','uờ','uớ','uợ','uở','uỡ','ùơ','úơ','ụơ','ủơ','ũơ'];  // (q)uơ /wə/
+const diph_oe  = ['oe','oè','oé','oẹ','oẻ','oẽ','òe','óe','ọe','ỏe','õe','ue','uè','ué','uẹ','uẻ','uẽ','ùe','úe','ụe','ủe','ũe'];  // oe, (q)ue /wɛ/
 const diph_uê  = ['uê','uề','uế','uệ','uể','uễ','ùê','úê','ụê','ủê','ũê'];  // (q)uê /we/
 const diph_uy  = ['uy','uỳ','uý','uỵ','uỷ','uỹ','ùy','úy','ụy','ủy','ũy'];  // (q)uy /wi/
-const diph_ơi  = ['ơi','ơì','ơí','ơị','ơỉ','ơĩ','ời','ới','ợi','ởi','ỡi','ờy','ởy','ợy','ớy','ơy','ơỳ','ơý','ơỵ','ơỷ','ơỹ','ỡy'];
 const diph_uyê = ['uyê','uyề','uyế','uyệ','uyể','uyễ','uỳê','uýê','uỵê','uỷê','uỹê','ùyê','úyê','ụyê','ủyê','ũyê'];  // (q)uyê /wiə/
 const diph_uya = ['uya','uyà','uyá','uyạ','uyả','uyã','uỳa','uýa','uỵa','uỷa','uỹa','ùya','úya','ụya','ủya','ũya'];  // (q)uya /wiə/
+const diph_oa  = ['oa','oà','oá','oạ','oả','oã','òa','óa','ọa','ỏa','õa','ua','uà','uá','uạ','uả','uã','ùa','úa','ụa','ủa','ũa'];  // oa, (q)ua /wa:/
+const diph_oă  = ['oă','oằ','oắ','oặ','oẳ','oẵ','òă','óă','ọă','ỏă','õă','uă','uằ','uắ','uặ','uẳ','uẵ','ùă','úă','ụă','ủă','ũă'];  // oă, (q)uă /wa/
+const diph_uâ  = ['uâ','uầ','uấ','uậ','uẩ','uẫ','ùâ','úâ','ụâ','ủâ','ũâ'];  // (q)uâ /wə/
+const diph_uơ  = ['uơ','uờ','uớ','uợ','uở','uỡ','ùơ','úơ','ụơ','ủơ','ũơ'];  // (q)uơ /wə:/
+
+const diph_ơi  = ['ơi','ơì','ơí','ơị','ơỉ','ơĩ','ời','ới','ợi','ởi','ỡi','ờy','ởy','ợy','ớy','ơy','ơỳ','ơý','ơỵ','ơỷ','ơỹ','ỡy'];
 const diph_oay = ['oay','òay','óay','ọay','ỏay','õay','oày','oáy','oạy','oảy','oãy','oaỳ','oaý','oaỵ','oaỷ','oaỹ'];
 const diph_uây = ['uây','ùây','úây','ụây','ủây','ũây','uầy','uấy','uậy','uẩy','uẫy','uâỳ','uâý','uâỵ','uâỷ','uâỹ'];
 
@@ -56,7 +57,7 @@ for (const char of vowel_ê) {
     vowel_mappings[char] = ['เ', '', ''];
 }
 for (const char of vowel_ơ) {
-    vowel_mappings[char] = ['เ', '', 'อ'];
+    vowel_mappings[char] = ['เ', '', 'อ']; // เ◌อ
 }
 for (const char of vowel_ô) {
     vowel_mappings[char] = ['โ', '', ''];
@@ -65,89 +66,103 @@ for (const char of vowel_o) {
     vowel_mappings[char] = ['', '', 'อ'];
 }
 for (const char of vowel_a) {
-    vowel_mappings[char] = ['', '', 'า'];
+    vowel_mappings[char] = ['', '', 'า']; // only one option: า
 }
 for (const char of vowel_ă) {
-    vowel_mappings[char] = ['', '', '']; // ('', 'ั', '')
+    vowel_mappings[char] = ['', 'ั', '']; // ◌ั or ◌ะ or nothing
 }
 for (const char of vowel_â) {
-    vowel_mappings[char] = ['เ', 'ี', '']; // 'ิ'
+    vowel_mappings[char] = ['เ', 'ิ', '']; // เ◌ี or เ◌ิ
 }
 for (const char of vowel_i) {
-    vowel_mappings[char] = ['', 'ี', '']; // 'ิ'
+    vowel_mappings[char] = ['', 'ี', '']; // ◌ี or ◌ิ
 }
 for (const char of vowel_ư) {
-    vowel_mappings[char] = ['', 'ื', ''];
+    vowel_mappings[char] = ['', 'ื', '']; // ◌ื or ◌ึ
 }
 for (const char of vowel_u) {
-    vowel_mappings[char] = ['', 'ุ', '']; // 'ู'
+    vowel_mappings[char] = ['', 'ุ', '']; // ◌ุ or ◌ู
 }
 
 // Diphthongs
 for (const char of diph_ươ) {
-    vowel_mappings[char] = ['เ', 'ื', 'อ'];
+    vowel_mappings[char] = ['เ', 'ื', 'อ']; // เ◌ือ
 }
 for (const char of diph_ưa) {
-    vowel_mappings[char] = ['เ', 'ื', 'อ'];
+    vowel_mappings[char] = ['เ', 'ื', 'อ']; // เ◌ือ
 }
 for (const char of diph_iê) {
-    vowel_mappings[char] = ['เ', 'ี', 'ย'];
+    vowel_mappings[char] = ['เ', 'ี', 'ย']; // เ◌ีย
 }
 for (const char of diph_ia) {
-    vowel_mappings[char] = ['เ', 'ี', 'ย'];
+    vowel_mappings[char] = ['เ', 'ี', 'ย']; // เ◌ีย
 }
 for (const char of diph_uô) {
-    vowel_mappings[char] = ['', '', 'ว']; // ('', 'ั', 'ว')
+    vowel_mappings[char] = ['', 'ั', 'ว']; // ◌ัว or ◌ว
 }
 for (const char of diph_ua) {
-    vowel_mappings[char] = ['', 'ั', 'ว'];
+    vowel_mappings[char] = ['', 'ั', 'ว']; // ◌ัว or ◌ว
 }
 
 for (const char of diph_ay) {
-    vowel_mappings[char] = ['', '', 'ย']; // ('', 'ั', 'ย')
+    vowel_mappings[char] = ['ไ', '', '']; // ไ◌ or ◌ัย
 }
-for (const char of diph_au) {
-    vowel_mappings[char] = ['เ', '', 'า'];
+for (const char of diph_au) {// /a:w/ <ao> = ◌าว
+    vowel_mappings[char] = ['เ', '', 'า']; // เ◌า
 }
 for (const char of diph_ây) {
-    vowel_mappings[char] = ['เ', 'ี', 'ย']; // ('', 'ึ', 'ย')
-}
-
-for (const char of diph_oă) {
-    vowel_mappings[char] = ['', 'ว', '']; // ('', 'วั', '')
-}
-for (const char of diph_oa) {
-    vowel_mappings[char] = ['', 'ว', 'า'];
-}
-for (const char of diph_oe) {
-    vowel_mappings[char] = ['แ', 'ว', ''];
-}
-for (const char of diph_uâ) {
-    vowel_mappings[char] = ['เ', 'วี', '']; // ('', 'วึ', '') // 'วิ'
-}
-for (const char of diph_uơ) {
-    vowel_mappings[char] = ['เ', 'ว', 'อ'];
-}
-for (const char of diph_uê) {
-    vowel_mappings[char] = ['เ', 'ว', ''];
-}
-for (const char of diph_uy) {
-    vowel_mappings[char] = ['', 'วี', '']; // 'วิ'
+    vowel_mappings[char] = ['ใ', '', '']; // ใ◌ or เ◌ิย
 }
 for (const char of diph_ơi) {
-    vowel_mappings[char] = ['เ', '', 'ย'];
+    vowel_mappings[char] = ['เ', '', 'ย']; // เ◌ย
 }
-for (const char of diph_uyê) {
-    vowel_mappings[char] = ['เ', 'วี', 'ย'];
+
+// /W/ ON-GLIDES
+for (const char of diph_oe) { // /wɛ/ <oe/(q)ue*>
+    vowel_mappings[char] = ['แ', 'ว', '']; // แ◌ว◌?
 }
-for (const char of diph_uya) {
-    vowel_mappings[char] = ['เ', 'วี', 'ย'];
+for (const char of diph_uê) {// /we/ <uê>
+    vowel_mappings[char] = ['เ', 'ว', '']; // เ◌ว◌?
 }
-for (const char of diph_oay) {
-    vowel_mappings[char] = ['', 'ว', 'ย']; // ('', 'วั', 'ย')
+for (const char of diph_uy) {// /wi/ <uy>
+    vowel_mappings[char] = ['', 'วี', '']; // ◌วี◌?
 }
-for (const char of diph_uây) {
-    vowel_mappings[char] = ['เ', 'วี', 'ย']; // ('', 'วึ', 'ย')
+for (const char of diph_uyê) {// /wiə̯/ <uyê>
+    vowel_mappings[char] = ['เ', 'วี', 'ย']; // เ◌วีย?
+}
+for (const char of diph_uya) {// /wiə̯/ <uya>
+    vowel_mappings[char] = ['เ', 'วี', 'ย']; // เ◌วีย?
+}
+for (const char of diph_oa) {// /wa:/ <oa/(q)ua>
+    vowel_mappings[char] = ['', 'ว', 'า']; // ◌วา◌?
+}
+for (const char of diph_oă) {// /wa/ <oă/(q)uă>
+    vowel_mappings[char] = ['', 'วั', '']; // ◌ัว◌ or ◌ว◌
+}
+for (const char of diph_uâ) {// /wə/ <uâ>
+    vowel_mappings[char] = ['เ', 'วี', '']; // เ◌ีว◌?
+}
+for (const char of diph_uơ) {// /wə:/ <uơ>
+    vowel_mappings[char] = ['เ', 'ว', 'อ']; // เ◌ีวอ◌?
+}
+
+// /wiw/ <uyu>
+
+// /wɛw/ <oeo/(q)ueo>
+
+// for (const char of diph_oai) {// /wa:j/ <oai, (q)uai>
+//     vowel_mappings[char] = ['', 'ว', 'าย']; // ?
+// }
+
+// for (const char of diph_oao) {// /wa:w/ <oao/(q)uao>
+//     vowel_mappings[char] = ['', 'ว', 'าว']; // ?
+// }
+
+for (const char of diph_oay) {// /waj/ <oay/(q)uay>
+    vowel_mappings[char] = ['', 'วั', 'ย']; // ◌ัวย
+}
+for (const char of diph_uây) {// /wə̆j/ <uây>
+    vowel_mappings[char] = ['เ', 'วี', 'ย']; // เ◌ีวย?
 }
 
 // Consonants
