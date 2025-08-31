@@ -1,164 +1,350 @@
-const vowel_mappings = {
-  'a': ['', '', 'า'],
-  'ă': ['', '', ''],
-  'â': ['เ', 'ี', ''],
-  'e': ['แ', '', ''],
-  'ê': ['เ', '', ''],
-  'i': ['', 'ี', ''],
-  'o': ['', '', 'อ'],
-  'ô': ['โ', '', ''],
-  'ơ': ['เ', '', 'อ'],
-  'u': ['', 'ุ', ''],
-  'ư': ['', 'ื', ''],
-  'y': ['', 'ี', ''],
+// Create arrays for vowel mappings
+const vowel_a  = ['a','à','á','ạ','ả','ã'];
+const vowel_ă  = ['ă','ằ','ắ','ặ','ẳ','ẵ'];
+const vowel_â  = ['â','ầ','ấ','ậ','ẩ','ẫ'];
+const vowel_e  = ['e','è','é','ẹ','ẻ','ẽ'];
+const vowel_ê  = ['ê','ề','ế','ệ','ể','ễ'];
+const vowel_i  = ['i','ì','í','ị','ỉ','ĩ','y','ỳ','ý','ỵ','ỷ','ỹ'];
+const vowel_o  = ['o','ò','ó','ọ','ỏ','õ'];
+const vowel_ô  = ['ô','ồ','ố','ộ','ổ','ỗ'];
+const vowel_ơ  = ['ơ','ờ','ớ','ợ','ở','ỡ'];
+const vowel_u  = ['u','ù','ú','ụ','ủ','ũ'];
+const vowel_ư  = ['ư','ừ','ứ','ự','ử','ữ'];
+const vowel_y  = ['y','ỳ','ý','ỵ','ỷ','ỹ'];
 
-  'ia': ['เ', 'ี', 'ย'],
-  'iê': ['เ', 'ี', 'ย'],
-  'ua': ['', 'ั', 'ว'],
-  'uô': ['', 'ั', 'ว'],
-  'ưa': ['เ', 'ื', 'อ'],
-  'ươ': ['เ', 'ื', 'อ'],
+const diph_ưa  = ['ưa','ừa','ứa','ựa','ửa','ữa','ưà','ưá','ưạ','ưả','ưã'];
+const diph_ươ  = ['ươ','ừơ','ứơ','ựơ','ửơ','ữơ','ườ','ướ','ượ','ưở','ưỡ'];
+const diph_ia  = ['ia','ìa','ía','ịa','ỉa','ĩa','ià','iá','iạ','iả','iã','yà','yá','yã','yả','ya','ỳa','ýa','ỵa','ỷa','ỹa','yạ'];
+const diph_iê  = ['iê','ìê','íê','ịê','ỉê','ĩê','iề','iế','iệ','iể','iễ','yề','yể','yệ','yế','yê','ỳê','ýê','ỵê','ỷê','ỹê','yễ'];
+const diph_ua  = ['ua','ùa','úa','ụa','ủa','ũa','uà','uá','uạ','uả','uã'];
+const diph_uô  = ['uô','ùô','úô','ụô','ủô','ũô','uồ','uố','uộ','uổ','uỗ'];
 
-  'au': ['เ', '', 'า'],
-  'ay': ['', '', 'ย'],
-  'ây': ['เ', 'ี', 'ย'],
+const diph_ay  = ['ay','aỳ','aý','aỵ','aỷ','aỹ','ày','áy','ạy','ảy','ãy'];
+const diph_au  = ['au','aù','aú','aụ','aủ','aũ','àu','áu','ạu','ảu','ãu'];
+const diph_ây  = ['ây','âỳ','âý','âỵ','âỷ','âỹ','ầy','ấy','ậy','ẩy','ẫy'];
 
-  'oa': ['', 'ว', 'า'],
-  'oă': ['', 'ว', ''],
-  'oe': ['แ', 'ว', ''],
-  'ơi': ['เ', '', 'ย'],
-  'uâ': ['เ', 'วี', ''],
-  'ue': ['แ', 'ว', ''],
-  'uê': ['เ', 'ว', ''],
-  'uơ': ['เ', 'ว', 'อ'],
-  'uy': ['', 'วี', ''],
+const diph_oă  = ['oă','oằ','oắ','oặ','oẳ','oẵ','òă','óă','ọă','ỏă','õă'];  // (q)uă
+const diph_oa  = ['oa','oà','oá','oạ','oả','oã','òa','óa','ọa','ỏa','õa'];  // (q)ua
+const diph_oe  = ['oe','oè','oé','oẹ','oẻ','oẽ','òe','óe','ọe','ỏe','õe'];  // (q)ue
+const diph_uâ  = ['uâ','uầ','uấ','uậ','uẩ','uẫ','ùâ','úâ','ụâ','ủâ','ũâ'];  // (q)uâ
+const diph_uơ  = ['uơ','uờ','uớ','uợ','uở','uỡ','ùơ','úơ','ụơ','ủơ','ũơ'];  // (q)uơ /wə/
+const diph_uê  = ['uê','uề','uế','uệ','uể','uễ','ùê','úê','ụê','ủê','ũê'];  // (q)uê /we/
+const diph_uy  = ['uy','uỳ','uý','uỵ','uỷ','uỹ','ùy','úy','ụy','ủy','ũy'];  // (q)uy /wi/
+const diph_ơi  = ['ơi','ơì','ơí','ơị','ơỉ','ơĩ','ời','ới','ợi','ởi','ỡi','ờy','ởy','ợy','ớy','ơy','ơỳ','ơý','ơỵ','ơỷ','ơỹ','ỡy'];
+const diph_uyê = ['uyê','uyề','uyế','uyệ','uyể','uyễ','uỳê','uýê','uỵê','uỷê','uỹê','ùyê','úyê','ụyê','ủyê','ũyê'];  // (q)uyê /wiə/
+const diph_uya = ['uya','uyà','uyá','uyạ','uyả','uyã','uỳa','uýa','uỵa','uỷa','uỹa','ùya','úya','ụya','ủya','ũya'];  // (q)uya /wiə/
+const diph_oay = ['oay','òay','óay','ọay','ỏay','õay','oày','oáy','oạy','oảy','oãy','oaỳ','oaý','oaỵ','oaỷ','oaỹ'];
+const diph_uây = ['uây','ùây','úây','ụây','ủây','ũây','uầy','uấy','uậy','uẩy','uẫy','uâỳ','uâý','uâỵ','uâỷ','uâỹ'];
 
-  'oay': ['', 'ว', 'ย'],
-  'uây': ['เ', 'วี', 'ย'],
-  'uya': ['เ', 'วี', 'ย'],
-  'uyê': ['เ', 'วี', 'ย'],
-};
+const b_tones = 'áắấíóớúứýéếốạặậịọợụựỵẹệộ';
+const c_tones = 'ảẳẩỉỏởủửỷẻểổãẵẫĩõỡũữỹẽễỗ';
+const high_vowels = 'aăâioơuưyeêôáắấíóớúứýéếốảẳẩỉỏởủửỷẻểổ';
+const low_vowels  = 'àằầìòờùừỳèềồạặậịọợụựỵẹệộãẵẫĩõỡũữỹẽễỗ';
 
+const vowels = low_vowels + high_vowels;
+const consonants = 'bcdđfghjklmnpqrstvwxz';
+const letters = consonants + vowels;
+
+// Initialize an empty object for vowel mappings
+const vowel_mappings = {};
+
+// Populate vowel_mappings using loops
+for (const char of vowel_e) {
+    vowel_mappings[char] = ['แ', '', ''];
+}
+for (const char of vowel_ê) {
+    vowel_mappings[char] = ['เ', '', ''];
+}
+for (const char of vowel_ơ) {
+    vowel_mappings[char] = ['เ', '', 'อ'];
+}
+for (const char of vowel_ô) {
+    vowel_mappings[char] = ['โ', '', ''];
+}
+for (const char of vowel_o) {
+    vowel_mappings[char] = ['', '', 'อ'];
+}
+for (const char of vowel_a) {
+    vowel_mappings[char] = ['', '', 'า'];
+}
+for (const char of vowel_ă) {
+    vowel_mappings[char] = ['', '', '']; // ('', 'ั', '')
+}
+for (const char of vowel_â) {
+    vowel_mappings[char] = ['เ', 'ี', '']; // 'ิ'
+}
+for (const char of vowel_i) {
+    vowel_mappings[char] = ['', 'ี', '']; // 'ิ'
+}
+for (const char of vowel_ư) {
+    vowel_mappings[char] = ['', 'ื', ''];
+}
+for (const char of vowel_u) {
+    vowel_mappings[char] = ['', 'ุ', '']; // 'ู'
+}
+
+// Diphthongs
+for (const char of diph_ươ) {
+    vowel_mappings[char] = ['เ', 'ื', 'อ'];
+}
+for (const char of diph_ưa) {
+    vowel_mappings[char] = ['เ', 'ื', 'อ'];
+}
+for (const char of diph_iê) {
+    vowel_mappings[char] = ['เ', 'ี', 'ย'];
+}
+for (const char of diph_ia) {
+    vowel_mappings[char] = ['เ', 'ี', 'ย'];
+}
+for (const char of diph_uô) {
+    vowel_mappings[char] = ['', '', 'ว']; // ('', 'ั', 'ว')
+}
+for (const char of diph_ua) {
+    vowel_mappings[char] = ['', 'ั', 'ว'];
+}
+
+for (const char of diph_ay) {
+    vowel_mappings[char] = ['', '', 'ย']; // ('', 'ั', 'ย')
+}
+for (const char of diph_au) {
+    vowel_mappings[char] = ['เ', '', 'า'];
+}
+for (const char of diph_ây) {
+    vowel_mappings[char] = ['เ', 'ี', 'ย']; // ('', 'ึ', 'ย')
+}
+
+for (const char of diph_oă) {
+    vowel_mappings[char] = ['', 'ว', '']; // ('', 'วั', '')
+}
+for (const char of diph_oa) {
+    vowel_mappings[char] = ['', 'ว', 'า'];
+}
+for (const char of diph_oe) {
+    vowel_mappings[char] = ['แ', 'ว', ''];
+}
+for (const char of diph_uâ) {
+    vowel_mappings[char] = ['เ', 'วี', '']; // ('', 'วึ', '') // 'วิ'
+}
+for (const char of diph_uơ) {
+    vowel_mappings[char] = ['เ', 'ว', 'อ'];
+}
+for (const char of diph_uê) {
+    vowel_mappings[char] = ['เ', 'ว', ''];
+}
+for (const char of diph_uy) {
+    vowel_mappings[char] = ['', 'วี', '']; // 'วิ'
+}
+for (const char of diph_ơi) {
+    vowel_mappings[char] = ['เ', '', 'ย'];
+}
+for (const char of diph_uyê) {
+    vowel_mappings[char] = ['เ', 'วี', 'ย'];
+}
+for (const char of diph_uya) {
+    vowel_mappings[char] = ['เ', 'วี', 'ย'];
+}
+for (const char of diph_oay) {
+    vowel_mappings[char] = ['', 'ว', 'ย']; // ('', 'วั', 'ย')
+}
+for (const char of diph_uây) {
+    vowel_mappings[char] = ['เ', 'วี', 'ย']; // ('', 'วึ', 'ย')
+}
+
+// Consonants
 const consonant_mappings = {
-  'b': ['พ', 'บ'],
-  'c': ['ค', 'ก'],
-  'ch': ['ช', 'จ'],
-  'd': ['ย', 'หย'],
-  'đ': ['ฑ', 'ฎ'],
-  'g': ['ฅ', 'ฃ'],
-  'gh': ['ฅ', 'ฃ'],
-  'gi': ['ย', 'หย'],
-  'h': ['ฮ', 'ห'],
-  'k': ['ค', 'ก'],
-  'kh': ['ฆ', 'ข'],
-  'l': ['ล', 'หล'],
-  'm': ['ม', 'หม'],
-  'n': ['น', 'หน'],
-  'ng': ['ง', 'หง'],
-  'ngh': ['ง', 'หง'],
-  'nh': ['ญ', 'หญ'],
-  'p': ['ภ', 'ป'],
-  'ph': ['ฟ', 'ผ'],
-  'q': ['ค', 'ก'],
-  'r': ['ร', 'หร'],
-  's': ['ซ', 'ส'],
-  't': ['ท', 'ด'],
-  'th': ['ธ', 'ถ'],
-  'tr': ['ฒ', 'ฐ'],
-  'v': ['ว', 'หว'],
-  'x': ['ฌ', 'ฉ'],
+    'm': ['ม', 'หม'],
+    'n': ['น', 'หน'],
+    'nh': ['ญ', 'หญ'],
+    'ng': ['ง', 'หง'],
+    'ngh': ['ง', 'หง'],
 
-  'f': ['ฟ', 'ผ'],
-  'j': ['ย', 'หย'],
-  'w': ['ว', 'หว'],
-  'z': ['ย', 'หย'],
+    'b': ['พ', 'บ'], // !
+    'đ': ['ฑ', 'ฎ'],
+    'p': ['ภ', 'ป'], // !
+    't': ['ท', 'ด'],
+    'th': ['ธ', 'ถ'],
+    'tr': ['ฒ', 'ฐ'],
+    'ch': ['ช', 'จ'],
+    'c': ['ค', 'ก'],
+    'k': ['ค', 'ก'],
+    'q': ['ค', 'ก'],
+    'qu': ['คว', 'กว'],
 
-  // 'i': ['ย', 'หย'],
-  // 'o': ['ว', 'หว'],
-  // 'u': ['ว', 'หว'],
-  // 'y': ['ย', 'หย'],
+    'f': ['ฟ', 'ผ'], // !
+    'ph': ['ฟ', 'ผ'], // !
+    'x': ['ฌ', 'ฉ'],
+    's': ['ซ', 'ส'],
+    'kh': ['ฆ', 'ข'],
+    'h': ['ฮ', 'ห'],
+
+    'v': ['ว', 'หว'],
+    'w': ['ว', 'หว'],
+    'gi': ['ย', 'หย'],
+    'j': ['ย', 'หย'],
+    'z': ['ย', 'หย'],
+    'd': ['ย', 'หย'],
+    'g': ['ฅ', 'ฃ'],
+    'gh': ['ฅ', 'ฃ'],
+    'l': ['ล', 'หล'],
+    'r': ['ร', 'หร'],
 };
 
 function transcribe() {
-    let inputText = document.getElementById("input").value.toLowerCase().trim();
-    let words = inputText.split(/\s+/);  // split by spaces
-    let result = [];
+    // Get input text
+    let inputText = document.getElementById("input").value.trim();
 
-    words.forEach(word => {
-        let syllable = processSyllable(word);
-        result.push(syllable);
-    });
+    // Call your viet_to_thai function
+    let result = viet_to_thai(inputText);
 
-    document.getElementById("output").value = result.join(" ");
+    // Output result
+    document.getElementById("output").value = result;
 }
 
-function processSyllable(syll) {
-    let preV = '', mainC = '', postV1 = '', tone = '', postV2 = '', finalC = '';
-
-    let consonantKeys = Object.keys(consonant_mappings).sort((a,b)=>b.length-a.length);
-    let vowelKeys = Object.keys(vowel_mappings).sort((a,b)=>b.length-a.length);
-
-    let initial = '';
-    for (let key of consonantKeys) {
-        if (syll.startsWith(key)) {
-            initial = key;
-            break;
-        }
+function det_register(consonant, following_vowel) {
+    if (!(consonant in consonant_mappings)) {
+        return null; // consonant not found
     }
 
-    let remaining = syll.slice(initial.length);
+    const following_vowels = Array.from(following_vowel); // split into characters
 
-    // Find vowel cluster
-    let vowel = '';
-    for (let key of vowelKeys) {
-        if (remaining.startsWith(key)) {
-            vowel = key;
-            break;
-        }
-    }
-
-    if (vowel) {
-        preV = vowel_mappings[vowel][0];
-        postV1 = vowel_mappings[vowel][1];
-        postV2 = vowel_mappings[vowel][2];
-        remaining = remaining.slice(vowel.length);
-    }
-
-    if (initial) {
-        mainC = consonant_mappings[initial][1];
-    } else if (vowel) {
-        mainC = 'อ';
+    if (following_vowels.some(vowel => low_vowels.includes(vowel))) {
+        return 0; // low vowel → choose low consonant
     } else {
-        mainC = ''; // For spaces, punctuation, or unknown characters
+        return 1; // high vowel → choose high consonant
     }
+}
 
-    let glide = '';
-    if (remaining.length > 0) {
-        if (remaining.endsWith('i') || remaining.endsWith('y')) {
-            glide = 'ย';
-        } else if (remaining.endsWith('o') || remaining.endsWith('u')) {
-            glide = 'ว';
+function viet_to_thai(input_text) {
+    input_text = '   ' + input_text.toLowerCase() + '   ';
+    let result = '';
+    let i = 0;
+
+    while (i < input_text.length) {
+        let char = input_text[i];
+
+        if (' ,.:;?\'\"01234567890!@#$%&*()_+=[]{}'.includes(char)) {
+            result += char;
+            i++;
+            continue;
         }
-    }
 
-    // Handle final consonant
-    let final = '';
-    for (let key of consonantKeys) {
-        if (remaining.endsWith(key)) {
-            final = key;
-            break;
+        let matched = false;
+        let matchedLength = 1; // default increment if nothing matches
+
+        for (const length of [3, 2, 1]) {
+            let substring = input_text.slice(i, i + length);
+
+            if (consonant_mappings.hasOwnProperty(substring)) {
+                let triph_substring = input_text.slice(i + length, i + length + 3);
+                let diph_substring = input_text.slice(i + length, i + length + 2);
+                let vowel_substring = input_text.slice(i + length, i + length + 1);
+
+                for (const v_length of [3, 2, 1]) {
+                    if ((i < input_text.length - length - v_length) && vowel_mappings.hasOwnProperty(triph_substring)) {
+                        let register = det_register(substring, triph_substring);
+                        result += vowel_mappings[triph_substring][0] + consonant_mappings[substring][register] + vowel_mappings[triph_substring][1];
+
+                        if ([...triph_substring].some(v => c_tones.includes(v))) {
+                            result += '้';
+                        } else if ([...triph_substring].some(v => b_tones.includes(v)) && (i + length < input_text.length) && 'pbtđckqg'.includes(input_text[i + length + 3])) {
+                            result += '';
+                        } else if ([...triph_substring].some(v => b_tones.includes(v))) {
+                            result += '่';
+                        }
+                        result += vowel_mappings[triph_substring][2];
+                        matchedLength = length + 3;
+                        matched = true;
+                        break;
+
+                    } else if ((i < input_text.length - length - v_length) && vowel_mappings.hasOwnProperty(diph_substring)) {
+                        let register = det_register(substring, diph_substring);
+                        result += vowel_mappings[diph_substring][0] + consonant_mappings[substring][register] + vowel_mappings[diph_substring][1];
+
+                        if ([...diph_substring].some(v => c_tones.includes(v))) {
+                            result += '้';
+                        } else if ([...diph_substring].some(v => b_tones.includes(v)) && (i + length < input_text.length) && 'pbtđckqg'.includes(input_text[i + length + 2])) {
+                            result += '';
+                        } else if ([...diph_substring].some(v => b_tones.includes(v))) {
+                            result += '่';
+                        }
+                        result += vowel_mappings[diph_substring][2];
+                        matchedLength = length + 2;
+                        matched = true;
+                        break;
+
+                    } else if ((i < input_text.length - length - v_length) && vowel_mappings.hasOwnProperty(vowel_substring)) {
+                        let register = det_register(substring, vowel_substring);
+                        result += vowel_mappings[vowel_substring][0] + consonant_mappings[substring][register] + vowel_mappings[vowel_substring][1];
+
+                        if (c_tones.includes(vowel_substring)) {
+                            result += '้';
+                        } else if (b_tones.includes(vowel_substring) && (i + length < input_text.length) && 'pbtđckqg'.includes(input_text[i + length + 1])) {
+                            result += '';
+                        } else if (b_tones.includes(vowel_substring)) {
+                            result += '่';
+                        }
+                        result += vowel_mappings[vowel_substring][2];
+                        matchedLength = length + 1;
+                        matched = true;
+                        break;
+
+                    } else {
+                        if (['d', 'gi', 'j', 'l', 'm', 'n', 'ng', 'nh', 'r', 'v', 'w', 'z'].includes(substring)) {
+                            result += consonant_mappings[substring][0];
+                            matchedLength = length;
+                            matched = true;
+                            break;
+                        } else if (substring === 'p') {
+                            result += consonant_mappings['b'][1];
+                            matchedLength = length;
+                            matched = true;
+                            break;
+                        } else if (consonant_mappings.hasOwnProperty(substring)) {
+                            result += consonant_mappings[substring][1];
+                            matchedLength = length;
+                            matched = true;
+                            break;
+                        }
+                    }
+                }
+            } else if (vowel_mappings.hasOwnProperty(substring) && !vowel_mappings.hasOwnProperty(input_text[i - length])) {
+                if (i > 0 && !consonant_mappings.hasOwnProperty(input_text[i - 1])) {
+                    // Add the vowel parts
+                    result += vowel_mappings[substring][0] + 'อ' + vowel_mappings[substring][1];
+
+                    // --- Tone handling for vowel-initial syllables ---
+                    if ([...substring].some(v => c_tones.includes(v))) {
+                        result += '้';
+                    } else if ([...substring].some(v => b_tones.includes(v))) {
+                        result += '่';
+                    }
+                    result += vowel_mappings[substring][2];
+                }
+                matchedLength = length;
+                matched = true;
+            }
+
+            if (matched) break;
         }
-    }
 
-    if (final) {
-        if (['d','gi','j','l','m','n','ng','nh','r','v','w','z'].includes(final)) {
-            finalC = consonant_mappings[final][0]; // special coda forms (voiced/sonorants)
-        } else if (final === 'p') {
-            finalC = consonant_mappings['b'][1]; // p → b in coda
-        } else if (consonant_mappings[final]) {
-            finalC = consonant_mappings[final][1]; // default
+        if (!matched) {
+            if ('ou'.includes(char)) {
+                if (i > 0 && vowel_mappings.hasOwnProperty(input_text[i - 1])) {
+                    result += 'ว';
+                } else {
+                    result += char;
+                }
+            } else if ('iy'.includes(char)) {
+                if (i > 0 && vowel_mappings.hasOwnProperty(input_text[i - 1])) {
+                    result += 'ย';
+                } else {
+                    result += char;
+                }
+            }
         }
+
+        i += matchedLength;
     }
 
-    return preV + mainC + postV1 + postV2 + glide + finalC;
+    return result.trim();
 }
