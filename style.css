@@ -7,7 +7,6 @@ html, body {
     font-size: 16px;
     font-family: "Noto Sans";
     align-content: center;
-    line-height: 1;
 }
 
 textarea {
@@ -16,14 +15,13 @@ textarea {
     background-color: #fed;
     width: 65%;
     padding: 16px;
-    font-size: 16px;
+    font-size: 100%;
     line-height: 1;
 }
 
 .output {
     font-family: "Noto Sans Thai Looped";
-    font-size: 17px;
-    line-height: 1;
+    font-size: 105%;
 }
 
 .interface {
