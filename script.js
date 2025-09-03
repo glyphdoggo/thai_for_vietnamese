@@ -331,10 +331,11 @@ function viet_to_thai(input_text) {
                     // Add the vowel parts
                     result += vowel_mappings[substring][0] + 'อ' + vowel_mappings[substring][1];
 
-                    // --- Tone handling for vowel-initial syllables ---
-                    if ([...substring].some(v => c_tones.includes(v))) {
+                    if (c_tones.includes(substring)) {
                         result += '้';
-                    } else if ([...substring].some(v => b_tones.includes(v))) {
+                    } else if (b_tones.includes(substring) && (i + length < input_text.length) && 'pbtđckqg'.includes(input_text[i + length + 1])) {
+                        result += '';
+                    } else if (b_tones.includes(substring)) {
                         result += '่';
                     }
                     result += vowel_mappings[substring][2];
