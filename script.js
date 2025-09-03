@@ -336,7 +336,7 @@ function viet_to_thai(input_text) {
                     } else if (b_tones.includes(substring) && (i + length < input_text.length) && 'pbtđckqg'.includes(input_text[i + length + 1])) {
                         result += '';
                     } else if (b_tones.includes(substring)) {
-                        result += '่';
+                        result += '่X';
                     }
                     result += vowel_mappings[substring][2];
                 }
