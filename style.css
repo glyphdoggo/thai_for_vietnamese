@@ -20,7 +20,7 @@ textarea {
 }
 
 .output {
-    font-family: "Noto Sans Thai Looped";
+    font-family: "Noto Sans Thai";
     font-size: 105%;
 }
 
@@ -42,6 +42,15 @@ textarea {
 
 .noto-sans {
   font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.noto-sans-thai {
+  font-family: "Noto Sans Thai", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
