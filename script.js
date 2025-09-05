@@ -223,9 +223,9 @@ function det_register(consonant, following_vowel) {
     const following_vowels = Array.from(following_vowel); // split into characters
 
     if (following_vowels.some(vowel => low_vowels.includes(vowel))) {
-        return 1; // low vowel → choose low consonant
+        return 0; // low vowel → choose low consonant
     } else {
-        return 0; // high vowel → choose high consonant
+        return 1; // high vowel → choose high consonant
     }
 }
 
