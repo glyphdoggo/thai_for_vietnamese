@@ -1,46 +1,300 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Thai Transcriber for Vietnamese</title>
+    <title>Vietnamese Thai Transcriber</title>
 
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An easy-to-use web app for transcribing Vietnamese text into the Thai script.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An easy-to-use tool for transcribing Vietnamese text into the Thai script.">
     <meta name="keywords" content="Vietnamese, Thai, transliteration, transcription, orthography">
-    <!-- <meta name="author" content="Daniel Saeger"> -->
+    <meta name="author" content="Daniel Saeger">
 
-    <meta property="og:title" content="Thai Transcriber for Vietnamese">
-    <meta property="og:description" content="An easy-to-use web app for transcribing Vietnamese text into the Thai script.">
+    <meta property="og:title" content="Vietnamese Thai Transcriber">
+    <meta property="og:description" content="An easy-to-use web application for transcribing Vietnamese text into the Thai script.">
     <meta property="og:image" content="https://raw.githubusercontent.com/glyphdoggo/thai-for-vietnamese/main/banner.png">
     <meta property="og:url" content="https://glyphdoggo.github.io/thai-for-vietnamese/">
     
-    <meta name="twitter:title" content="Thai Transcriber for Vietnamese">
-    <meta name="twitter:description" content="An easy-to-use web app for transcribing Vietnamese text into the Thai script.">
+    <meta name="twitter:title" content="Vietnamese Thai Transcriber">
+    <meta name="twitter:description" content="An easy-to-use tool for transcribing Vietnamese text into the Thai script.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/glyphdoggo/thai-for-vietnamese/main/banner.png">
+    <meta name="twitter:url" content="https://glyphdoggo.github.io/thai-for-vietnamese/">
     <meta name="twitter:card" content="summary_large_image"> 
 
-    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="https://raw.githubusercontent.com/glyphdoggo/thai-for-vietnamese/main/icon.png">
-    <style>@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+Thai&family=Noto+Sans+Thai+Looped&display=swap');</style>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&family=Noto+Sans+Thai&family=Noto+Sans+Thai+Looped&display=swap');
+      
+      html, body {
+        margin: 0;
+        background-color: #00362c;
+        color: #fed;
+        height: 100%;
+        font-family: "Noto Sans", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+      }
+      textarea {
+        font-family: "Noto Sans", sans-serif;
+        background-color: #fed;
+        color: #00362c;
+        width: 100%;
+        padding: 20px;
+        line-height: 1.25;
+        border-radius: 10px;
+        border: none;
+        box-sizing: border-box;
+        resize: vertical;
+        max-width: 70%;
+      }
+      .interface {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 30px;
+      }
+      .btn {
+        background: #00362c;
+        color: #fed;
+        border: 2px solid #fed;
+        width: 150px;
+        height: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .btn:hover {
+        background: #007867;
+      }
+      .btn:active {
+        background: #005548;
+        transform: scale(0.97);
+      }
+      h3 { font-size: 22px }
+      h4 { opacity: .5; font-weight: 400; font-style: italic }
+    </style>
   </head>
   <body>
     <div class="interface">
-      <div class="two"></div>
-      <div class="two">
-        <h3>THAI FOR VIETNAMESE</h3>
+      <div>
+        <h3>VIETNAMESE THAI TRANSCRIBER</h3>
         <h4>A Thai Orthography for the Vietnamese Language</h4>
       </div>
-      <div class="one"></div>
+      
       <div>
-        <p>Type or paste Vietnamese text below:</p>
-        <textarea rows="5" id="input" placeholder="Tất cả mọi người sinh ra đều được tự do và bình đẳng về nhân phẩm và quyền lợi..." oninput="transcribe()"></textarea>
+        <textarea rows="5" id="input" placeholder="Type here! Viết vào đây :)" oninput="transcribe()"></textarea>
       </div>
-      <div class="one"></div>
+      
       <div>
-        <p>Result:</p>
-        <textarea rows="5" id="output" class="output"></textarea>
+        <textarea rows="5" id="output" readonly></textarea>
       </div>
-      <div class="one"></div>
-      <div class="two"></div>
-      <script src="script.js"></script>
+      
+      <div class="buttons">
+        <input id="sample-btn" class="btn" type="button" title="Load sample text" value="Sample text" onclick="loadSample()">
+      </div>
     </div>
+
+    <script>
+      const SAMPLES = [
+        "Mọi con người sinh ra đều tự do và bình đẳng về nhân phẩm và quyền lợi. Họ được tạo hóa ban cho lý trí và lương tâm và phải đối xử với nhau với tinh thần huynh đệ.\n\nTất cả mọi người đều được hưởng mọi quyền lợi và quyền tự do được ghi trong Tuyên ngôn này, bất kể mọi sự khác biêt, về chủng tộc, màu da, giới tính, ngôn ngữ, tôn giáo, chính kiến, nguồn gốc quốc gia hoặc xã hội, tài sản, địa vị khi sinh ra hoặc địa vị khác.\n\nNgoài ra, không có bất kỳ sự phân biệt nào đối với nền tảng về tình trạng chính trị, tài phán hoặc quốc tế của đất nước hoặc lãnh thổ của một người, dù nó là lãnh thổ độc lập, ủy thác, không có tự chủ hoặc bị các hạn chế về chủ quyền khác.\n\nTất cả mọi người đều có quyền sống, quyền tự chủ và quyền an toàn cho cá nhân.",
+        "Đế Minh cháu ba đời Viêm Đế Thần Nông sinh ra Đế Nghi, nhân đi tuần về phía Nam đến núi Ngũ Lĩnh mừng gặp và lấy được con gái bà Vụ Tiên rồi trở về, sinh ra Lộc Tục. Lộc Tục mặt mày sáng sủa, thông minh phúc hậu, Đế Minh rất lấy làm lạ, muốn cho nối ngôi mình. Lộc Tục cố từ, xin nhường cho anh là Đế Nghi. Đế Minh liền lập Đế Nghi làm người nối ngôi cai trị đất phương Bắc, phong cho Lộc Tục làm Kinh Dương Vương để cai trị đất phương Nam, lấy hiệu nước là Xích Quỷ. Kinh Dương Vương có tài đi dưới thủy phủ, lấy Long Nữ là con gái Long Vương ở hồ Động Đình, sinh ra Sùng Lãm hiệu là Lạc Long Quân, cho nối ngôi trị nước. Kinh Dương Vương không biết đi đâu mất."
+      ];
+
+      let sampleIndex = 0;
+
+      function loadSample() {
+        const inputArea = document.getElementById("input");
+        inputArea.value = SAMPLES[sampleIndex];
+        sampleIndex = (sampleIndex + 1) % SAMPLES.length;
+        transcribe();
+      }
+
+      const b_tones = 'áắấíóớúứýéếốạặậịọợụựỵẹệộ';
+      const c_tones = 'ảẳẩỉỏởủửỷẻểổãẵẫĩõỡũữỹẽễỗ';
+      const high_vowels = 'aăâioơuưyeêôáắấíóớúứýéếốảẳẩỉỏởủửỷẻểổ';
+      const low_vowels  = 'àằầìòờùừỳèềồạặậịọợụựỵẹệộãẵẫĩõỡũữỹẽễỗ';
+
+      const vowel_mappings = {};
+      
+      const vowelGroups = [
+        { keys: ['e','è','é','ẹ','ẻ','ẽ'], val: ['แ', '', ''] },
+        { keys: ['ê','ề','ế','ệ','ể','ễ'], val: ['เ', '', ''] },
+        { keys: ['ơ','ờ','ớ','ợ','ở','ỡ','ờy','ởy','ợy','ớy','ơy','ơỳ','ơý','ơỵ','ơỷ','ơỹ','ỡy'], val: ['เ', '', 'อ'] },
+        { keys: ['ô','ồ','ố','ộ','ổ','ỗ'], val: ['โ', '', ''] },
+        { keys: ['o','ò','ó','ọ','ỏ','õ'], val: ['', '', 'อ'] },
+        { keys: ['a','à','á','ạ','ả','ã'], val: ['', '', 'า'] },
+        { keys: ['ă','ằ','ắ','ặ','ẳ','ẵ'], val: ['', 'ั', ''] },
+        { keys: ['â','ầ','ấ','ậ','ẩ','ẫ'], val: ['เ', 'ิ', ''] },
+        { keys: ['i','ì','í','ị','ỉ','ĩ','y','ỳ','ý','ỵ','ỷ','ỹ'], val: ['', 'ี', ''] },
+        { keys: ['ư','ừ','ứ','ự','ử','ữ'], val: ['', 'ื', ''] },
+        { keys: ['u','ù','ú','ụ','ủ','ũ'], val: ['', 'ุ', ''] },
+        { keys: ['ươ','ừơ','ứơ','ựơ','ửơ','ữơ','ườ','ướ','ượ','ưở','ưỡ','ưa','ừa','ứa','ựa','ửa','ữa','ưà','ưá','ưạ','ưả','ưã'], val: ['เ', 'ื', 'อ'] },
+        { keys: ['iê','ìê','íê','ịê','ỉê','ĩê','iề','iế','iệ','iể','iễ','yề','yể','yệ','yế','yê','ỳê','ýê','ỵê','ỷê','ỹê','yễ','ia','ìa','ía','ịa','ỉa','ĩa','ià','iá','iạ','iả','iã','yà','yá','yã','yả','ya','ỳa','ýa','ỵa','ỷa','ỹa','yạ'], val: ['เ', 'ี', 'ย'] },
+        { keys: ['uô','ùô','úô','ụô','ủô','ũô','uồ','uố','uộ','uổ','uỗ','ua','ùa','úa','ụa','ủa','ũa','uà','uá','uạ','uả','uã'], val: ['', 'ั', 'ว'] },
+        { keys: ['ay','aỳ','aý','aỵ','aỷ','aỹ','ày','áy','ạy','ảy','ãy'], val: ['ไ', '', ''] },
+        { keys: ['au','aù','aú','aụ','aủ','aũ','àu','áu','ạu','ảu','ãu'], val: ['เ', '', 'า'] },
+        { keys: ['ây','âỳ','âý','âỵ','âỷ','âỹ','ầy','ấy','ậy','ẩy','ẫy'], val: ['ใ', '', ''] },
+        { keys: ['ơi','ơì','ơí','ơị','ơỉ','ơĩ','ời','ới','ợi','ởi','ỡi'], val: ['เ', '', 'ย'] },
+        { keys: ['oe','oè','oé','oẹ','oẻ','oẽ','òe','óe','ọe','ỏe','õe','ue','uè','ué','uẹ','uẻ','uẽ','ùe','úe','ụe','ủe','ũe'], val: ['แ', 'ว', ''] },
+        { keys: ['uê','uề','uế','uệ','uể','uễ','ùê','úê','ụê','ủê','ũê'], val: ['เ', 'ว', ''] },
+        { keys: ['uy','uỳ','uý','uỵ','uỷ','uỹ','ùy','úy','ụy','ủy','ũy'], val: ['', 'วี', ''] },
+        { keys: ['uyê','uyề','uyế','uyệ','uyể','uyễ','uỳê','uýê','uỵê','uỷê','uỹê','ùyê','úyê','ụyê','ủyê','ũyê','uya','uyà','uyá','uyạ','uyả','uyã','uỳa','uýa','uỵa','uỷa','uỹa','ùya','úya','ụya','ủya','ũya'], val: ['เ', 'วี', 'ย'] },
+        { keys: ['oa','oà','oá','oạ','oả','oã','òa','óa','ọa','ỏa','õa','ua','uà','uá','uạ','uả','uã','ùa','úa','ụa','ủa','ũa'], val: ['', 'ว', 'า'] },
+        { keys: ['oă','oằ','oắ','oặ','oẳ','oẵ','òă','óă','ọă','ỏă','õă','uă','uằ','uắ','uặ','uẳ','uẵ','ùă','úă','ụă','ủă','ũă'], val: ['', 'วั', ''] },
+        { keys: ['uâ','uầ','uấ','uậ','uẩ','uẫ','ùâ','úâ','ụâ','ủâ','ũâ'], val: ['เ', 'วี', ''] },
+        { keys: ['uơ','uờ','uớ','uợ','uở','uỡ','ùơ','úơ','ụơ','ủơ','ũơ'], val: ['เ', 'ว', 'อ'] },
+        { keys: ['oay','òay','óay','ọay','ỏay','õay','oày','oáy','oạy','oảy','oãy','oaỳ','oaý','oaỵ','oaỷ','oaỹ'], val: ['', 'วั', 'ย'] },
+        { keys: ['uây','ùây','úây','ụây','ủây','ũây','uầy','uấy','uậy','uẩy','uẫy','uâỳ','uâý','uâỵ','uâỷ','uâỹ'], val: ['เ', 'วี', 'ย'] }
+      ];
+
+      for (const group of vowelGroups) {
+        for (const k of group.keys) {
+          vowel_mappings[k] = group.val;
+        }
+      }
+
+      const consonant_mappings = {
+        'm': ['ม', 'หม'], 'n': ['น', 'หน'], 'nh': ['ญ', 'หญ'], 'ng': ['ง', 'หง'], 'ngh': ['ง', 'หง'],
+        'b': ['พ', 'บ'], 'đ': ['ฑ', 'ฎ'], 'p': ['ภ', 'ผ'], 't': ['ท', 'ด'], 'th': ['ธ', 'ถ'],
+        'tr': ['ฒ', 'ฐ'], 'ch': ['ช', 'จ'], 'c': ['ค', 'ก'], 'k': ['ค', 'ก'], 'q': ['ค', 'ก'],
+        'qu': ['คว', 'กว'], 'f': ['ฟ', 'ฝ'], 'ph': ['ฟ', 'ฝ'], 'x': ['ฌ', 'ฉ'], 's': ['ซ', 'ส'],
+        'kh': ['ฆ', 'ข'], 'h': ['ฮ', 'ห'], 'v': ['ว', 'หว'], 'w': ['ว', 'หว'], 'gi': ['ย', 'หย'],
+        'j': ['ย', 'หย'], 'z': ['ย', 'หย'], 'd': ['ย', 'หย'], 'g': ['ฅ', 'ฃ'], 'gh': ['ฅ', 'ฃ'],
+        'l': ['ล', 'หล'], 'r': ['ร', 'หร'],
+      };
+
+      function transcribe() {
+        let inputText = document.getElementById("input").value;
+        document.getElementById("output").value = viet_to_thai(inputText);
+      }
+
+      function det_register(consonant, following_vowel) {
+        if (!(consonant in consonant_mappings)) return null;
+        return [...following_vowel].some(v => low_vowels.includes(v)) ? 0 : 1;
+      }
+
+      function viet_to_thai(input_text) {
+        let textLower = '   ' + input_text.toLowerCase() + '   ';
+        let result = '';
+        let i = 3;
+
+        while (i < textLower.length - 3) {
+          let char = textLower[i];
+
+          if ('!?\"01234567890@#$%&*()_+=[]{}/<>\\¿€®©§\t\n\r'.includes(char)) {
+            result += char;
+            i++;
+            continue;
+          } else if (char === '\'') {
+            result += '์';
+            i++;
+            continue;
+          } else if (char === '.') {
+            result += ' ๆ ';
+            i++;
+            continue;
+          } else if (',:;'.includes(char)) {
+            result += ' ';
+            i++;
+            continue;
+          }
+
+          let matched = false;
+          let matchedLength = 1;
+
+          for (const c_len of [3, 2, 1]) {
+            let cons_sub = textLower.slice(i, i + c_len);
+
+            if (consonant_mappings.hasOwnProperty(cons_sub)) {
+              for (const v_len of [3, 2, 1]) {
+                let vowel_sub = textLower.slice(i + c_len, i + c_len + v_len);
+
+                if (vowel_mappings.hasOwnProperty(vowel_sub)) {
+                  let register = det_register(cons_sub, vowel_sub);
+                  result += vowel_mappings[vowel_sub][0] + consonant_mappings[cons_sub][register] + vowel_mappings[vowel_sub][1];
+
+                  if ([...vowel_sub].some(v => c_tones.includes(v))) {
+                    result += '้';
+                  } else if ([...vowel_sub].some(v => b_tones.includes(v))) {
+                    let next_char = textLower[i + c_len + v_len] || '';
+                    if ('pbtđckqg'.includes(next_char)) {
+                      result += ''; 
+                    } else {
+                      result += '่';
+                    }
+                  }
+                  result += vowel_mappings[vowel_sub][2];
+                  matchedLength = c_len + v_len;
+                  matched = true;
+                  break;
+                }
+              }
+
+              if (!matched) {
+                if (['d', 'gi', 'j', 'l', 'm', 'n', 'ng', 'nh', 'r', 'v', 'w', 'z'].includes(cons_sub)) {
+                  result += consonant_mappings[cons_sub][0];
+                } else if (cons_sub === 'p') {
+                  result += consonant_mappings['b'][1];
+                } else {
+                  result += consonant_mappings[cons_sub][1];
+                }
+                matchedLength = c_len;
+                matched = true;
+              }
+            }
+            if (matched) break;
+          }
+
+          if (!matched) {
+            for (const v_len of [3, 2, 1]) {
+              let vowel_sub = textLower.slice(i, i + v_len);
+              let prev_char = textLower[i - 1];
+
+              if (vowel_mappings.hasOwnProperty(vowel_sub) && !vowel_mappings.hasOwnProperty(textLower.slice(i - v_len, i))) {
+                if (!consonant_mappings.hasOwnProperty(prev_char)) {
+                  result += vowel_mappings[vowel_sub][0] + 'อ' + vowel_mappings[vowel_sub][1];
+
+                  if ([...vowel_sub].some(v => c_tones.includes(v))) {
+                    result += '้';
+                  } else if ([...vowel_sub].some(v => b_tones.includes(v))) {
+                    let next_char = textLower[i + v_len] || '';
+                    if ('pbtđckqg'.includes(next_char)) {
+                      result += '';
+                    } else {
+                      result += '่';
+                    }
+                  }
+                  result += vowel_mappings[vowel_sub][2];
+                }
+                matchedLength = v_len;
+                matched = true;
+                break;
+              }
+            }
+          }
+
+          if (!matched) {
+            let prev_char = textLower[i - 1];
+            if ('ou'.includes(char) && vowel_mappings.hasOwnProperty(prev_char)) {
+              result += 'ว';
+            } else if ('iy'.includes(char) && vowel_mappings.hasOwnProperty(prev_char)) {
+              result += 'ย';
+            } else {
+              result += input_text[i - 3];
+            }
+          }
+
+          i += matchedLength;
+        }
+
+        return result;
+      }
+    </script>
   </body>
 </html>
