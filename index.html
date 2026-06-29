@@ -103,6 +103,7 @@
     <script>
       const SAMPLES = [
         "Mọi con người sinh ra đều tự do và bình đẳng về nhân phẩm và quyền lợi. Họ được tạo hóa ban cho lý trí và lương tâm và phải đối xử với nhau với tinh thần huynh đệ.\n\nTất cả mọi người đều được hưởng mọi quyền lợi và quyền tự do được ghi trong Tuyên ngôn này, bất kể mọi sự khác biêt, về chủng tộc, màu da, giới tính, ngôn ngữ, tôn giáo, chính kiến, nguồn gốc quốc gia hoặc xã hội, tài sản, địa vị khi sinh ra hoặc địa vị khác.\n\nNgoài ra, không có bất kỳ sự phân biệt nào đối với nền tảng về tình trạng chính trị, tài phán hoặc quốc tế của đất nước hoặc lãnh thổ của một người, dù nó là lãnh thổ độc lập, ủy thác, không có tự chủ hoặc bị các hạn chế về chủ quyền khác.\n\nTất cả mọi người đều có quyền sống, quyền tự chủ và quyền an toàn cho cá nhân.",
+        "Trường quê em do bố của em xây kĩ nên sạch và đẹp lắm.",
         "Đế Minh cháu ba đời Viêm Đế Thần Nông sinh ra Đế Nghi, nhân đi tuần về phía Nam đến núi Ngũ Lĩnh mừng gặp và lấy được con gái bà Vụ Tiên rồi trở về, sinh ra Lộc Tục. Lộc Tục mặt mày sáng sủa, thông minh phúc hậu, Đế Minh rất lấy làm lạ, muốn cho nối ngôi mình. Lộc Tục cố từ, xin nhường cho anh là Đế Nghi. Đế Minh liền lập Đế Nghi làm người nối ngôi cai trị đất phương Bắc, phong cho Lộc Tục làm Kinh Dương Vương để cai trị đất phương Nam, lấy hiệu nước là Xích Quỷ. Kinh Dương Vương có tài đi dưới thủy phủ, lấy Long Nữ là con gái Long Vương ở hồ Động Đình, sinh ra Sùng Lãm hiệu là Lạc Long Quân, cho nối ngôi trị nước. Kinh Dương Vương không biết đi đâu mất."
       ];
 
@@ -115,8 +116,6 @@
         transcribe();
       }
 
-      const b_tones = 'áắấíóớúứýéếốạặậịọợụựỵẹệộ';
-      const c_tones = 'ảẳẩỉỏởủửỷẻểổãẵẫĩõỡũữỹẽễỗ';
       const high_vowels = 'aăâioơuưyeêôáắấíóớúứýéếốảẳẩỉỏởủửỷẻểổ';
       const low_vowels  = 'àằầìòờùừỳèềồạặậịọợụựỵẹệộãẵẫĩõỡũữỹẽễỗ';
 
@@ -187,12 +186,12 @@
         while (i < textLower.length - 3) {
           let char = textLower[i];
 
-          if ('!?\"01234567890@#$%&*()_+=[]{}/<>\\¿€®©§\t\n\r'.includes(char)) {
-            result += char;
+          if (char === '\'') {
+            result += '์';
             i++;
             continue;
-          } else if (char === '\'') {
-            result += '์';
+          } else if (char === ' ') {
+            result += '';
             i++;
             continue;
           } else if (char === '.') {
@@ -219,9 +218,9 @@
                   let register = det_register(cons_sub, vowel_sub);
                   result += vowel_mappings[vowel_sub][0] + consonant_mappings[cons_sub][register] + vowel_mappings[vowel_sub][1];
 
-                  if ([...vowel_sub].some(v => c_tones.includes(v))) {
+                  if (/[ảẳẩỉỏởủửỷẻểổãẵẫĩõỡũữỹẽễỗ]/.test(vowel_sub)) {
                     result += '้';
-                  } else if ([...vowel_sub].some(v => b_tones.includes(v))) {
+                  } else if (/[áắấíóớúứýéếốạặậịọợụựỵẹệộ]/.test(vowel_sub)) {
                     let next_char = textLower[i + c_len + v_len] || '';
                     if ('pbtđckqg'.includes(next_char)) {
                       result += ''; 
@@ -260,9 +259,9 @@
                 if (!consonant_mappings.hasOwnProperty(prev_char)) {
                   result += vowel_mappings[vowel_sub][0] + 'อ' + vowel_mappings[vowel_sub][1];
 
-                  if ([...vowel_sub].some(v => c_tones.includes(v))) {
+                  if (/[ảẳẩỉỏởủửỷẻểổãẵẫĩõỡũữỹẽễỗ]/.test(vowel_sub)) {
                     result += '้';
-                  } else if ([...vowel_sub].some(v => b_tones.includes(v))) {
+                  } else if (/[áắấíóớúứýéếốạặậịọợụựỵẹệộ]/.test(vowel_sub)) {
                     let next_char = textLower[i + v_len] || '';
                     if ('pbtđckqg'.includes(next_char)) {
                       result += '';
