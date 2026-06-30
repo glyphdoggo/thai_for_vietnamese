@@ -60,7 +60,7 @@
         margin-top: 30px;
       }
       .btn {
-        background: #00362c;
+        background: #005548;
         color: #fed;
         border: 2px solid #fed;
         width: 150px;
@@ -69,11 +69,8 @@
         cursor: pointer;
         font-size: 16px;
       }
-      .btn:hover {
-        background: #007867;
-      }
       .btn:active {
-        background: #005548;
+        background: #00362c;
         transform: scale(0.97);
       }
       h3 { font-size: 22px }
@@ -159,13 +156,7 @@
       }
 
       const consonant_mappings = {
-        'm': ['ม', 'หม'], 'n': ['น', 'หน'], 'nh': ['ญ', 'หญ'], 'ng': ['ง', 'หง'], 'ngh': ['ง', 'หง'],
-        'b': ['พ', 'บ'], 'đ': ['ฑ', 'ฎ'], 'p': ['ภ', 'ผ'], 't': ['ท', 'ด'], 'th': ['ธ', 'ถ'],
-        'tr': ['ฒ', 'ฐ'], 'ch': ['ช', 'จ'], 'c': ['ค', 'ก'], 'k': ['ค', 'ก'], 'q': ['ค', 'ก'],
-        'qu': ['คว', 'กว'], 'f': ['ฟ', 'ฝ'], 'ph': ['ฟ', 'ฝ'], 'x': ['ฌ', 'ฉ'], 's': ['ซ', 'ส'],
-        'kh': ['ฆ', 'ข'], 'h': ['ฮ', 'ห'], 'v': ['ว', 'หว'], 'w': ['ว', 'หว'], 'gi': ['ย', 'หย'],
-        'j': ['ย', 'หย'], 'z': ['ย', 'หย'], 'd': ['ย', 'หย'], 'g': ['ฅ', 'ฃ'], 'gh': ['ฅ', 'ฃ'],
-        'l': ['ล', 'หล'], 'r': ['ร', 'หร'],
+        'gi': ['ย', 'หย'], 'gy': ['ย', 'หย'], 'gí': ['หย', 'หย'], 'gỉ': ['หย', 'หย'], 'gý': ['หย', 'หย'], 'gỷ': ['หย', 'หย'], 'gì': ['ย', 'ย'], 'gị': ['ย', 'ย'], 'gĩ': ['ย', 'ย'], 'gỳ': ['ย', 'ย'], 'gỵ': ['ย', 'ย'], 'gỹ': ['ย', 'ย'], 'm': ['ม', 'หม'], 'n': ['น', 'หน'], 'nh': ['ญ', 'หญ'], 'ng': ['ง', 'หง'], 'ngh': ['ง', 'หง'], 'b': ['พ', 'บ'], 'đ': ['ฑ', 'ฎ'], 'p': ['ภ', 'ผ'], 't': ['ท', 'ด'], 'th': ['ธ', 'ถ'], 'tr': ['ฒ', 'ฐ'], 'ch': ['ช', 'จ'], 'c': ['ค', 'ก'], 'k': ['ค', 'ก'], 'q': ['ค', 'ก'], 'qu': ['คว', 'กว'], 'f': ['ฟ', 'ฝ'], 'ph': ['ฟ', 'ฝ'], 'x': ['ฌ', 'ฉ'], 's': ['ซ', 'ส'], 'kh': ['ฆ', 'ข'], 'h': ['ฮ', 'ห'], 'v': ['ว', 'หว'], 'w': ['ว', 'หว'], 'j': ['ย', 'หย'], 'z': ['ย', 'หย'], 'd': ['ย', 'หย'], 'g': ['ฅ', 'ฃ'], 'gh': ['ฅ', 'ฃ'], 'l': ['ล', 'หล'], 'r': ['ร', 'หร'],
       };
 
       function transcribe() {
@@ -179,7 +170,18 @@
       }
 
       function viet_to_thai(input_text) {
-        let textLower = '   ' + input_text.toLowerCase() + '   ';
+        const targetVowels = 'iyìíỉĩịỳýỷỹỵ';
+        
+        let allVowels = high_vowels + low_vowels;
+
+        let preparedText = input_text.replace(
+          new RegExp(`g([${targetVowels}])(?![${allVowels}])`, 'gi'), 
+          (match, vowel) => {
+            return 'gi' + vowel;
+          }
+        );
+
+        let textLower = '   ' + preparedText.toLowerCase() + '   ';
         let result = '';
         let i = 3;
 
@@ -214,9 +216,12 @@
                   let register = det_register(cons_sub, vowel_sub);
                   result += vowel_mappings[vowel_sub][0] + consonant_mappings[cons_sub][register] + vowel_mappings[vowel_sub][1];
 
-                  if (/[ảẳẩỉỏởủửỷẻểổãẵẫĩõỡũữỹẽễỗ]/.test(vowel_sub)) {
+                  const hookTilde = /[ảẳẩỉỏởủửỷẻểổãẵẫĩõỡũữỹẽễỗ]/;
+                  const acuteHeavy = /[áắấíóớúứýéếốạặậịọợụựỵẹệộ]/;
+
+                  if (hookTilde.test(vowel_sub) || hookTilde.test(cons_sub)) {
                     result += '้';
-                  } else if (/[áắấíóớúứýéếốạặậịọợụựỵẹệộ]/.test(vowel_sub)) {
+                  } else if (acuteHeavy.test(vowel_sub) || acuteHeavy.test(cons_sub)) {
                     let next_char = textLower[i + c_len + v_len] || '';
                     if ('pbtđckqg'.includes(next_char)) {
                       result += ''; 
@@ -224,6 +229,7 @@
                       result += '่';
                     }
                   }
+
                   result += vowel_mappings[vowel_sub][2];
                   matchedLength = c_len + v_len;
                   matched = true;
@@ -281,7 +287,7 @@
             } else if ('iy'.includes(char) && vowel_mappings.hasOwnProperty(prev_char)) {
               result += 'ย';
             } else {
-              result += input_text[i - 3];
+              result += preparedText[i - 3];
             }
           }
 
