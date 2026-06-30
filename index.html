@@ -194,11 +194,7 @@
             result += '';
             i++;
             continue;
-          } else if (char === '.') {
-            result += ' ๆ ';
-            i++;
-            continue;
-          } else if (',:;'.includes(char)) {
+          } else if ('.,:;-'.includes(char)) {
             result += ' ';
             i++;
             continue;
